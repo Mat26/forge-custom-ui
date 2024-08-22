@@ -1,5 +1,5 @@
 import Resolver from '@forge/resolver';
-import { fetchIssueDescription, createSubTaskIssue, fetchFunctions, fetchGenerateTestCases } from './services.js';
+import { fetchIssueDescription, createSubTaskIssue, fetchFunctions, fetchGenerateTestCases, fetchAllSubTaskIssue, deleteSubTask } from './services.js';
 
 const resolver = new Resolver();
 
@@ -21,6 +21,16 @@ resolver.define('generateTestCases', async (req) => {
 resolver.define('createSubTaskIssue', async (req) => {
   const subTaskBody = req.payload;
   return await createSubTaskIssue(subTaskBody);
+});
+
+resolver.define('getAllSubTaskIssue', async (req) => {
+  const issueKey = req.context.extension.issue.key;
+  return await fetchAllSubTaskIssue(issueKey);
+});
+
+resolver.define('deleteSubTask', async (req) => {
+  const subtaskId = req.payload;
+  return await deleteSubTask(subtaskId);
 });
 
 

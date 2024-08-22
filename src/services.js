@@ -1,4 +1,4 @@
-import { requestJiraApi, requestExternalApi } from './api';
+import { requestJiraApi, requestExternalApi, requestJiraApi2 } from './api';
 import { route } from '@forge/api';
 
 /**
@@ -57,3 +57,43 @@ export const fetchGenerateTestCases = async (storyId, functionName) => {
     const body = { user_story: storyId, function_name: functionName };
     return await requestExternalApi(url, body);
   };
+
+
+
+/**
+ * Generates test cases based on a user story and function.
+ * @param {string} storyId - ID of the user story.
+ * @param {string} functionName - Name of the function.
+ * @returns {Promise<Object>} - Generated test cases.
+ */
+export const fetchAllSubTaskIssue = async (issueKey) => {
+  const url = route`/rest/api/3/issue/${issueKey}`;
+  const options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  };
+  const result = await requestJiraApi(url, options);
+  return result.fields.subtasks.map(subtask => subtask.id);
+};
+
+
+/**
+ * Generates test cases based on a user story and function.
+ * @param {string} subtaskId - Name of the function.
+ * @returns {Promise<Object>} - Generated test cases.
+ */
+export const deleteSubTask = async (subtaskId) => {
+  const url = route`/rest/api/3/issue/${subtaskId}`;
+  const options = {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  };
+  const result = await requestJiraApi2(url, options);
+  return result;
+};
