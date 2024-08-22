@@ -1,4 +1,4 @@
-import { requestJiraApi, requestExternalApi, requestJiraApi2 } from './api';
+import { requestJiraApi, requestExternalApi } from './api';
 import { route } from '@forge/api';
 
 /**
@@ -8,7 +8,7 @@ import { route } from '@forge/api';
  */
 export const fetchIssueDescription = async (issueKey) => {
     const url = route`/rest/api/2/issue/${issueKey}?fields=description`;
-    const data = await requestJiraApi(url);
+    const data = await requestJiraApi(url, {}, 'json');
     return data.fields.description;
   };
   
@@ -27,7 +27,7 @@ export const createSubTaskIssue = async (subTaskBody) => {
       },
       body: JSON.stringify(subTaskBody),
     };
-    const result = await requestJiraApi(url, options);
+    const result = await requestJiraApi(url, options, 'json');
     return {
       issueKey: result.key,
     };
@@ -39,7 +39,7 @@ export const createSubTaskIssue = async (subTaskBody) => {
  * @returns {Promise<Array>} - List of functions.
  */
 export const fetchFunctions = async (description) => {
-    const url = 'https://a009-152-203-179-178.ngrok-free.app/api/get_functions';
+    const url = 'https://6240-128-77-42-10.ngrok-free.app/api/get_functions';
     const body = { user_story: description };
     const result = await requestExternalApi(url, body);
     return result.functions;
@@ -53,7 +53,7 @@ export const fetchFunctions = async (description) => {
  * @returns {Promise<Object>} - Generated test cases.
  */
 export const fetchGenerateTestCases = async (storyId, functionName) => {
-    const url = 'https://a009-152-203-179-178.ngrok-free.app/api/generate_test_case';
+    const url = 'https://6240-128-77-42-10.ngrok-free.app/api/generate_test_case';
     const body = { user_story: storyId, function_name: functionName };
     return await requestExternalApi(url, body);
   };
@@ -75,7 +75,7 @@ export const fetchAllSubTaskIssue = async (issueKey) => {
       'Content-Type': 'application/json',
     }
   };
-  const result = await requestJiraApi(url, options);
+  const result = await requestJiraApi(url, options, 'json');
   return result.fields.subtasks.map(subtask => subtask.id);
 };
 
@@ -94,6 +94,6 @@ export const deleteSubTask = async (subtaskId) => {
       'Content-Type': 'application/json',
     }
   };
-  const result = await requestJiraApi2(url, options);
+  const result = await requestJiraApi(url, options, 'text');
   return result;
 };

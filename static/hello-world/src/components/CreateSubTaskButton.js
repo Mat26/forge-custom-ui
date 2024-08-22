@@ -30,10 +30,8 @@ const CreateSubTaskIssue = () => {
       for (const func of functionsList) {
         const testCaseDescription = await generateTestCases(description, func);
         const issueBody = await generateBodyNewIssueTask(testCaseDescription.test_case);
-        // Uncomment the line below to enable sub-task creation
-        // await createSubTaskIssue(issueBody);
+        await createSubTaskIssue(issueBody);
       }
-
       handleFetchSuccess();
     } catch (error) {
       handleFetchError(error);
@@ -42,7 +40,7 @@ const CreateSubTaskIssue = () => {
 
   return (
     <button onClick={handleClick} disabled={isLoading} className="button-jira">
-      {isLoading ? 'Loading...' : 'Create Test Cases'}
+      {isLoading ? 'Loading...' : 'Generate Test Cases'}
     </button>
   );
 };

@@ -1,30 +1,25 @@
 import api from '@forge/api';
 
-export const requestJiraApi = async (url, options = {}) => {
-    try {
-      const response = await api.asUser().requestJira(url, options);
-      if (!response.ok) {
-        throw new Error(`Failed request: ${response.status} ${response.statusText}`);
-      }
-      return await response.json();
-    } catch (error) {
-      console.error(`Error during Jira API request:`, error);
-      throw error;
-    }
-  };
 
-export const requestJiraApi2 = async (url, options = {}) => {
+export const requestJiraApi = async (url, options = {}, responseType = 'json') => {
   try {
     const response = await api.asUser().requestJira(url, options);
     if (!response.ok) {
       throw new Error(`Failed request: ${response.status} ${response.statusText}`);
     }
-    return await response.text();
+
+    if (responseType === 'text') {
+      return await response.text();
+    } else if (responseType === 'json') {
+      return await response.json();
+    } else {
+      throw new Error(`Unsupported response type: ${responseType}`);
+    }
   } catch (error) {
     console.error(`Error during Jira API request:`, error);
     throw error;
   }
-};  
+};
   
 export const requestExternalApi = async (url, body) => {
     const credentials = Buffer.from('user1:password1').toString('base64');
@@ -41,6 +36,7 @@ export const requestExternalApi = async (url, body) => {
       if (!response.ok) {
         throw new Error(`Failed external request: ${response.status} ${response.statusText}`);
       }
+
       return await response.json();
     } catch (error) {
       console.error(`Error during external API request:`, error);
