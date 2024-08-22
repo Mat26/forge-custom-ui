@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { router } from '@forge/bridge';
-import { getAllSubTaskIssue, deleteSubTask } from '../utils/api';
+import { getAllSubTaskIssue, deleteSubTask } from '../apis/jiraApi';
 import '../styles/App.css'; 
 
 const DeleteAllSubTaskButton = () => {

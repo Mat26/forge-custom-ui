@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { router } from '@forge/bridge';
 import { generateBodyNewIssueTask } from '../utils/issueUtils';
-import { fetchDescription, generateFunctions, generateTestCases, createSubTaskIssue } from '../utils/api';
+import { fetchDescription, createSubTaskIssue } from '../apis/jiraApi';
+import { generateFunctions, generateTestCases } from '../apis/genApi';
 import '../styles/App.css'; 
 
 const CreateSubTaskIssue = () => {

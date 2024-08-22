@@ -1,5 +1,7 @@
 import Resolver from '@forge/resolver';
-import { fetchIssueDescription, createSubTaskIssue, fetchFunctions, fetchGenerateTestCases, fetchAllSubTaskIssue, deleteSubTask } from './services.js';
+import { fetchIssueDescription, createSubTaskIssue, fetchAllSubTaskIssue, deleteSubTask } from './services/jiraService.js';
+import { fetchFunctions, fetchGenerateTestCases } from './services/genService.js';
+
 
 const resolver = new Resolver();
 
