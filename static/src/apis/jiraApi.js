@@ -4,8 +4,8 @@ import { invoke } from '@forge/bridge';
  * Fetches the description of an issue from Jira.
  * @returns {Promise<string>} - The description of the issue.
  */
-export const fetchDescription = async () => {
-  return await invoke('fetchDescription');
+export const getIssueDescription = async () => {
+  return await invoke('getIssueDescription');
 };
 
 /**

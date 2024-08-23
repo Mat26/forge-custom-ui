@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { router } from '@forge/bridge';
 import { generateBodyNewIssueTask } from '../utils/issueUtils';
-import { fetchDescription, createSubTaskIssue } from '../apis/jiraApi';
+import { getIssueDescription, createSubTaskIssue } from '../apis/jiraApi';
 import { generateFunctions, generateTestCases } from '../apis/genApi';
 import '../styles/App.css'; 
 
-const CreateSubTaskIssue = () => {
+const CreateSubTaskButton = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   
@@ -25,7 +25,7 @@ const CreateSubTaskIssue = () => {
   const handleClick = async () => {
     setIsLoading(true);
     try {
-      const description = await fetchDescription();
+      const description = await getIssueDescription();
       const functionsList = await generateFunctions(description);
 
       for (const func of functionsList) {
@@ -46,4 +46,4 @@ const CreateSubTaskIssue = () => {
   );
 };
 
-export default CreateSubTaskIssue;
+export default CreateSubTaskButton;

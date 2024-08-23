@@ -1,23 +1,23 @@
 import Resolver from '@forge/resolver';
-import { fetchIssueDescription, createSubTaskIssue, fetchAllSubTaskIssue, deleteSubTask } from './services/jiraService.js';
-import { fetchFunctions, fetchGenerateTestCases } from './services/genService.js';
+import { getIssueDescription, createSubTaskIssue, getAllSubTaskIssue, deleteSubTask } from './services/jiraService.js';
+import { generateFunctions, generateTestCases } from './services/genService.js';
 
 
 const resolver = new Resolver();
 
-resolver.define('fetchDescription', async (req) => {
+resolver.define('getIssueDescription', async (req) => {
   const issueKey = req.context.extension.issue.key;
-  return await fetchIssueDescription(issueKey);
+  return await getIssueDescription(issueKey);
 });
 
 resolver.define('generateFunctions', async (req) => {
   const description = req.payload;
-  return await fetchFunctions(description);
+  return await generateFunctions(description);
 });
 
 resolver.define('generateTestCases', async (req) => {
   const { userStory, functionName } = req.payload;
-  return await fetchGenerateTestCases(userStory, functionName);
+  return await generateTestCases(userStory, functionName);
 });
 
 resolver.define('createSubTaskIssue', async (req) => {
@@ -27,7 +27,7 @@ resolver.define('createSubTaskIssue', async (req) => {
 
 resolver.define('getAllSubTaskIssue', async (req) => {
   const issueKey = req.context.extension.issue.key;
-  return await fetchAllSubTaskIssue(issueKey);
+  return await getAllSubTaskIssue(issueKey);
 });
 
 resolver.define('deleteSubTask', async (req) => {

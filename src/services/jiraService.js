@@ -6,7 +6,7 @@ import { route } from '@forge/api';
  * @param {string} issueKey - The key of the issue.
  * @returns {Promise<string>} - The description of the issue.
  */
-export const fetchIssueDescription = async (issueKey) => {
+export const getIssueDescription = async (issueKey) => {
     const url = route`/rest/api/2/issue/${issueKey}?fields=description`;
     const data = await requestJiraApi(url, {}, 'json');
     return data.fields.description;
@@ -39,7 +39,7 @@ export const createSubTaskIssue = async (subTaskBody) => {
  * @param {string} functionName - Name of the function.
  * @returns {Promise<Object>} - Generated test cases.
  */
-export const fetchAllSubTaskIssue = async (issueKey) => {
+export const getAllSubTaskIssue = async (issueKey) => {
     const url = route`/rest/api/3/issue/${issueKey}`;
     const options = {
       method: 'GET',
