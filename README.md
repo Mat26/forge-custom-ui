@@ -51,7 +51,7 @@ forge install
 - Once the app is installed on a site, the site picks up the new app changes you deploy without needing to rerun the install command.
 
 ## Debugging
-1. Run `cd static && npm run start` to start the main-app
+1. Run `cd static && npm run build` to build the main-app.
 2. Run the `forge tunnel` command to run your Forge app locally.(Disconnect Endava vpn)
 
 ## Support
