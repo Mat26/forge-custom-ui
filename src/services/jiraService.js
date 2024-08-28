@@ -35,8 +35,15 @@ export const createSubTaskIssue = async (subTaskBody) => {
   };
 
 export const hasSubTasksByAI = async (issueKey) => {
-  const subTasksByAI = await getAllSubTaskAI(issueKey);
-  return subTasksByAI.length > 0;
+  const subtasksId = await getAllSubTaskIssue(issueKey);
+  for(const subtaskId of subtasksId) {
+    const subtaskLabels = await getLabelsBySubTaskIssue(subtaskId);
+    const hasLabelCreatedByAI = subtaskLabels && subtaskLabels.includes("AI");
+    if (hasLabelCreatedByAI) {
+      return true;
+    }
+  }
+  return false;
 }
 
 export const deleteSubTasksAI = async (issueKey) =>{
