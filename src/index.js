@@ -1,5 +1,5 @@
 import Resolver from '@forge/resolver';
-import { getIssueDescription, createSubTaskIssue, getAllSubTaskIssue, deleteSubTask } from './services/jiraService.js';
+import { getIssueDescription, createSubTaskIssue, deleteSubTasksAI, hasSubTasksByAI } from './services/jiraService.js';
 import { generateFunctions, generateTestCases } from './services/genService.js';
 
 
@@ -25,14 +25,14 @@ resolver.define('createSubTaskIssue', async (req) => {
   return await createSubTaskIssue(subTaskBody);
 });
 
-resolver.define('getAllSubTaskIssue', async (req) => {
+resolver.define('hasSubTasksByAI', async (req) => {
   const issueKey = req.context.extension.issue.key;
-  return await getAllSubTaskIssue(issueKey);
+  return await hasSubTasksByAI(issueKey);
 });
 
-resolver.define('deleteSubTask', async (req) => {
-  const subtaskId = req.payload;
-  return await deleteSubTask(subtaskId);
+resolver.define('deleteSubTasksAI', async (req) => {
+  const issueKey = req.context.extension.issue.key;
+  return await deleteSubTasksAI(issueKey);
 });
 
 

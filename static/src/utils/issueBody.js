@@ -12,7 +12,8 @@ export const buildIssueStructure = (projectKey, description, reporter, parent) =
               "name": "Subtask"
           },
           "reporter": { "id": reporter },
-          "parent": { "key": parent }
+          "parent": { "key": parent },
+          "labels": ["AI"]
       }
     }
   };

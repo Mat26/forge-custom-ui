@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { router } from '@forge/bridge';
-import { getAllSubTaskIssue, deleteSubTask } from '../apis/jiraApi';
+import { deleteSubTasksAI, hasSubTasksByAI } from '../apis/jiraApi';
 import '../styles/App.css'; 
 
 const DeleteAllSubTaskButton = () => {
@@ -11,8 +11,7 @@ const DeleteAllSubTaskButton = () => {
     const fetchSubTasks = async () => {
       setIsLoading(true);
       try {
-        const listSubTask = await getAllSubTaskIssue();
-        setHasSubTasks(listSubTask.length > 0);
+        setHasSubTasks(await hasSubTasksByAI());
       } catch (error) {
         console.error('Failed to fetch sub-tasks:', error);
         setHasSubTasks(false);
@@ -40,10 +39,7 @@ const DeleteAllSubTaskButton = () => {
   const handleClick = async () => {
     setIsLoading(true);
     try {
-      const listSubTask = await getAllSubTaskIssue();
-      for(const subTask of listSubTask) {
-        await deleteSubTask(subTask);
-      }      
+      await deleteSubTasksAI();     
       handleFetchSuccess();
     } catch (error) {
       handleFetchError(error);

@@ -1,5 +1,6 @@
 import { requestJiraApi } from '../apis/jiraApi';
 import { route } from '@forge/api';
+import { getAllSubTaskIssue, getLabelsBySubTaskIssue, deleteSubTask } from '../apis/jiraIssueApi';
 
 /**
  * Retrieves the description of an issue in Jira.
@@ -33,40 +34,27 @@ export const createSubTaskIssue = async (subTaskBody) => {
     };
   };
 
-  /**
- * Generates test cases based on a user story and function.
- * @param {string} storyId - ID of the user story.
- * @param {string} functionName - Name of the function.
- * @returns {Promise<Object>} - Generated test cases.
- */
-export const getAllSubTaskIssue = async (issueKey) => {
-    const url = route`/rest/api/3/issue/${issueKey}`;
-    const options = {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
-    };
-    const result = await requestJiraApi(url, options, 'json');
-    return result.fields.subtasks.map(subtask => subtask.id);
-  };
-  
-  
-  /**
-   * Generates test cases based on a user story and function.
-   * @param {string} subtaskId - Name of the function.
-   * @returns {Promise<Object>} - Generated test cases.
-   */
-  export const deleteSubTask = async (subtaskId) => {
-    const url = route`/rest/api/3/issue/${subtaskId}`;
-    const options = {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
-    };
-    const result = await requestJiraApi(url, options, 'text');
-    return result;
-  };
+export const hasSubTasksByAI = async (issueKey) => {
+  const subTasksByAI = await getAllSubTaskAI(issueKey);
+  return subTasksByAI.length > 0;
+}
+
+export const deleteSubTasksAI = async (issueKey) =>{
+  const subTasksIdAI = await getAllSubTaskAI(issueKey);
+  for(const subTaskIdAI of subTasksIdAI) {
+    await deleteSubTask(subTaskIdAI);
+  }
+}
+
+const getAllSubTaskAI = async (issueKey) => {
+  const subtasksId = await getAllSubTaskIssue(issueKey);
+  const subtasksByAI = [];
+  for(const subtaskId of subtasksId) {
+    const subtaskLabels = await getLabelsBySubTaskIssue(subtaskId);
+    const hasLabelCreatedByAI = subtaskLabels && subtaskLabels.includes("AI");
+    if (hasLabelCreatedByAI) {
+      subtasksByAI.push(subtaskId);
+    }
+  }
+  return subtasksByAI;
+}
